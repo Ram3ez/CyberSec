@@ -4,6 +4,7 @@ import "package:cyber_sec/components/custom_dialog.dart";
 import "package:cyber_sec/components/custom_text_field.dart";
 import "package:cyber_sec/functions/encryption.dart";
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 
 class EncryptionPage extends StatefulWidget {
   const EncryptionPage({super.key});
@@ -21,6 +22,7 @@ class _EncryptionPageState extends State<EncryptionPage> {
   bool isError = false;
   bool isDecryptError = false;
   bool submitted = false;
+  bool isException = false;
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +75,9 @@ class _EncryptionPageState extends State<EncryptionPage> {
               controller: outputController,
               readOnly: true,
               isNum: false,
+              iconFunction: () {
+                Clipboard.setData(ClipboardData(text: outputController.text));
+              },
             ),
 
             CustomButton(
@@ -106,14 +111,31 @@ class _EncryptionPageState extends State<EncryptionPage> {
               label: "Encrypted Text:",
               controller: decryptInputController,
               isNum: false,
+              iconFunction: () async {
+                var data = await Clipboard.getData(Clipboard.kTextPlain);
+                decryptInputController.text = data!.text ?? "";
+              },
             ),
-            isDecryptError
+            isDecryptError && !isException
                 ? Padding(
                   padding: const EdgeInsets.only(left: 10.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "Please Enter Some Text",
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodySmall?.copyWith(color: Colors.red),
+                    ),
+                  ),
+                )
+                : isException
+                ? Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Unexpected Error",
                       style: Theme.of(
                         context,
                       ).textTheme.bodySmall?.copyWith(color: Colors.red),
@@ -135,6 +157,7 @@ class _EncryptionPageState extends State<EncryptionPage> {
                 if (decryptInputController.text == "") {
                   setState(() {
                     isDecryptError = true;
+                    isException = false;
                     submitted = false;
                   });
                 } else {
@@ -144,12 +167,14 @@ class _EncryptionPageState extends State<EncryptionPage> {
                     );
                     setState(() {
                       isDecryptError = false;
+                      isException = false;
                       submitted = true;
                     });
                   } catch (_) {
                     setState(() {
                       isDecryptError = true;
                       submitted = false;
+                      isException = true;
                     });
                   }
                 }

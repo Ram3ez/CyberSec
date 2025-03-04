@@ -7,12 +7,14 @@ class CustomTextField extends StatelessWidget {
     required this.controller,
     this.readOnly = false,
     this.isNum = true,
+    this.iconFunction,
   });
 
   final String label;
   final bool isNum;
   final TextEditingController controller;
   final bool readOnly;
+  final void Function()? iconFunction;
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +29,13 @@ class CustomTextField extends StatelessWidget {
                 : TextInputType.text,
         cursorColor: Theme.of(context).primaryColor.withAlpha(200),
         decoration: InputDecoration(
-          suffixIcon:
-              isNum ? Icon(Icons.numbers) : Icon(Icons.text_snippet_outlined),
+          suffixIcon: GestureDetector(
+            child:
+                isNum ? Icon(Icons.numbers) : Icon(Icons.text_snippet_outlined),
+            onTap: () {
+              iconFunction != null ? iconFunction!() : () {};
+            },
+          ),
           labelStyle: Theme.of(
             context,
           ).textTheme.bodySmall?.copyWith(color: Colors.black),

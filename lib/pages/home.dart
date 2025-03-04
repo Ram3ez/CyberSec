@@ -15,6 +15,7 @@ class Home extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Center(
           child: Column(
+            spacing: 12,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CustomButton(
