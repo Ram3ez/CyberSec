@@ -1,14 +1,17 @@
 name: cyber_sec
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
   sdk: ^3.7.0
 
 dependencies:
+  crypto: ^3.0.6
+  encrypt: ^5.0.3
   flutter:
     sdk: flutter
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:

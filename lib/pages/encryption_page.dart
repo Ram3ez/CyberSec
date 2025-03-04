@@ -1,0 +1,164 @@
+import "package:cyber_sec/components/base_page.dart";
+import "package:cyber_sec/components/custom_button.dart";
+import "package:cyber_sec/components/custom_dialog.dart";
+import "package:cyber_sec/components/custom_text_field.dart";
+import "package:cyber_sec/functions/encryption.dart";
+import "package:flutter/material.dart";
+
+class EncryptionPage extends StatefulWidget {
+  const EncryptionPage({super.key});
+
+  @override
+  State<EncryptionPage> createState() => _EncryptionPageState();
+}
+
+class _EncryptionPageState extends State<EncryptionPage> {
+  final TextEditingController inputController = TextEditingController();
+  final TextEditingController outputController = TextEditingController();
+
+  final TextEditingController decryptInputController = TextEditingController();
+  final TextEditingController decryptOutputController = TextEditingController();
+  bool isError = false;
+  bool isDecryptError = false;
+  bool submitted = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return BasePage(
+      dialog: CustomDialog(
+        title: "Steps for AES Encryption & Decryption:",
+        body: """1. Generate a 256-bit encryption key from the password.
+     - Use SHA-256 hashing on the password to derive a secure key.
+
+  2. Encrypt the text using AES (CBC mode).
+     - Generate a random IV (Initialization Vector) of 16 bytes.
+     - Encrypt the text using AES with the generated key and IV.
+     - Concatenate IV with the encrypted text and encode it in Base64.
+
+  3. Decrypt the encrypted text.
+     - Decode the Base64-encoded input.
+     - Extract the IV (first 16 bytes) and the encrypted data.
+     - Decrypt using the same key and IV.
+
+  4. Return the decrypted plain text.""",
+      ),
+      title: "Encrypt/Decrypt",
+      child: Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Spacer(),
+            CustomTextField(
+              label: "Text:",
+              controller: inputController,
+              isNum: false,
+            ),
+            isError
+                ? Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Please Enter Some Text",
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodySmall?.copyWith(color: Colors.red),
+                    ),
+                  ),
+                )
+                : SizedBox.shrink(),
+            SizedBox(height: 10),
+            CustomTextField(
+              label: "Encrypted Text",
+              controller: outputController,
+              readOnly: true,
+              isNum: false,
+            ),
+
+            CustomButton(
+              label: "Encrypt",
+              onPress: () {
+                if (inputController.text == "") {
+                  outputController.text = "";
+                  setState(() {
+                    isError = true;
+                    submitted = false;
+                  });
+                } else {
+                  try {
+                    outputController.text = encrypt(inputController.text);
+                    setState(() {
+                      isError = false;
+                      submitted = true;
+                    });
+                  } catch (_) {
+                    outputController.text = "";
+                    setState(() {
+                      isError = true;
+                      submitted = false;
+                    });
+                  }
+                }
+              },
+            ),
+            Spacer(flex: 2),
+            CustomTextField(
+              label: "Encrypted Text:",
+              controller: decryptInputController,
+              isNum: false,
+            ),
+            isDecryptError
+                ? Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Please Enter Some Text",
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodySmall?.copyWith(color: Colors.red),
+                    ),
+                  ),
+                )
+                : SizedBox.shrink(),
+            SizedBox(height: 10),
+            CustomTextField(
+              label: "Decrypted Text",
+              controller: decryptOutputController,
+              readOnly: true,
+              isNum: false,
+            ),
+
+            CustomButton(
+              label: "Decrypt",
+              onPress: () {
+                if (decryptInputController.text == "") {
+                  setState(() {
+                    isDecryptError = true;
+                    submitted = false;
+                  });
+                } else {
+                  try {
+                    decryptOutputController.text = decrypt(
+                      decryptInputController.text,
+                    );
+                    setState(() {
+                      isDecryptError = false;
+                      submitted = true;
+                    });
+                  } catch (_) {
+                    setState(() {
+                      isDecryptError = true;
+                      submitted = false;
+                    });
+                  }
+                }
+              },
+            ),
+            Spacer(),
+          ],
+        ),
+      ),
+    );
+  }
+}
