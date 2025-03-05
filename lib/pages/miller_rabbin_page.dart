@@ -4,6 +4,7 @@ import 'package:cyber_sec/components/custom_dialog.dart';
 import 'package:cyber_sec/components/custom_text_field.dart';
 import 'package:cyber_sec/functions/miller_rabbin_test.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MillerRabbinPage extends StatefulWidget {
   const MillerRabbinPage({super.key});
@@ -24,90 +25,130 @@ class _MillerRabbinPageState extends State<MillerRabbinPage> {
       dialog: CustomDialog(
         title: "Miller-Rabin Primality Test Steps:",
         body: '''
-  Step 1: Choose an odd integer n to test
-  - The number n should be greater than 2.
-  - If n is even, it is NOT prime (except for 2).
-  
-  Step 2: Write (n - 1) as (2^s * d)
-  - Find the largest power of 2 that divides (n - 1).
-  - Express (n - 1) as (2^s * d), where d is odd.
-  
-  Step 3: Choose a random integer a
-  - Select a such that 2 ≤ a ≤ n - 2.
-  
-  Step 4: Compute x = a^d mod n
-  - If x = 1 or x = n - 1, the test is inconclusive, and n may be prime.
-  
-  Step 5: Perform repeated squaring
-  - Compute x = x^2 mod n up to (s - 1) times.
-  - If x = n - 1 at any step, the test is inconclusive, and n may be prime.
-  - If x never becomes n - 1, n is definitely composite.
-  
-  Step 6: Repeat the test for multiple values of a
-  - Run the test with different values of a to increase accuracy.
-  - If the test never fails for multiple values of a, n is probably prime.
-  - If the test fails for any a, n is definitely composite.
-                                  ''',
+Step 1: Choose an odd integer n (n > 2).
+  - Even numbers (except 2) are not prime.
+
+Step 2: Write (n - 1) as 2^s * d (with d odd).
+  - Factor out powers of 2 from n - 1.
+
+Step 3: Choose a random integer a (2 ≤ a ≤ n - 2).
+
+Step 4: Compute x = a^d mod n.
+  - If x is 1 or n - 1, the test is inconclusive.
+
+Step 5: Repeat squaring x up to (s - 1) times.
+  - If x becomes n - 1, the test is inconclusive.
+  - If x never becomes n - 1, n is composite.
+
+Step 6: Repeat for several values of a.
+  - Consistency implies n is probably prime.
+        ''',
       ),
       title: "Miller Rabbin Test",
       child: Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomTextField(label: "Number:", controller: controller),
-            isError
-                ? Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Please Enter a valid number",
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodySmall?.copyWith(color: Colors.red),
+        backgroundColor: Colors.transparent,
+        body: Center(
+          child: SingleChildScrollView(
+            child: Container(
+              margin: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Colors.white24),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Heading that introduces the test
+                  Text(
+                    "Learn How Miller-Rabin Test Works",
+                    style: GoogleFonts.nunito(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
+                    textAlign: TextAlign.center,
                   ),
-                )
-                : SizedBox.shrink(),
-            SizedBox(height: 40),
-            CustomButton(
-              label: "Submit",
-              onPress: () {
-                if (controller.text == "") {
-                  setState(() {
-                    isError = true;
-                    submitted = false;
-                  });
-                } else {
-                  setState(() {
-                    isError = false;
-                  });
-                  try {
-                    isPrime = millerRabinTest(BigInt.parse(controller.text));
-                    setState(() {
-                      submitted = true;
-                    });
-                  } catch (_) {
-                    setState(() {
-                      isError = true;
-                      submitted = false;
-                    });
-                  }
-                }
-              },
+                  const SizedBox(height: 20),
+                  // Brief explanation of the test purpose
+                  Text(
+                    "Enter a number below to test its primality using the Miller-Rabin algorithm. "
+                    "This probabilistic test helps determine if a number is likely prime or definitely composite.",
+                    style: GoogleFonts.nunito(
+                      fontSize: 16,
+                      color: Colors.white70,
+                    ),
+                    textAlign: TextAlign.justify,
+                  ),
+                  const SizedBox(height: 30),
+                  // Input field for the number
+                  CustomTextField(label: "Number:", controller: controller),
+                  const SizedBox(height: 10),
+                  // Error message if input is invalid
+                  isError
+                      ? Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Text(
+                            "Please enter a valid number",
+                            style: GoogleFonts.nunito(
+                              fontSize: 14,
+                              color: Colors.redAccent,
+                            ),
+                          ),
+                        ),
+                      )
+                      : const SizedBox.shrink(),
+                  const SizedBox(height: 30),
+                  // Submit button to run the test
+                  CustomButton(
+                    label: "Submit",
+                    onPress: () {
+                      if (controller.text.isEmpty) {
+                        setState(() {
+                          isError = true;
+                          submitted = false;
+                        });
+                      } else {
+                        setState(() {
+                          isError = false;
+                        });
+                        try {
+                          isPrime = millerRabinTest(
+                            BigInt.parse(controller.text),
+                          );
+                          setState(() {
+                            submitted = true;
+                          });
+                        } catch (_) {
+                          setState(() {
+                            isError = true;
+                            submitted = false;
+                          });
+                        }
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 30),
+                  // Display the result after submission
+                  submitted
+                      ? Text(
+                        "${controller.text} is ${isPrime ? "probably prime" : "not a"} prime number",
+                        style: GoogleFonts.nunito(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color:
+                              isPrime ? Colors.greenAccent : Colors.redAccent,
+                        ),
+                        textAlign: TextAlign.center,
+                      )
+                      : const SizedBox.shrink(),
+                ],
+              ),
             ),
-            submitted
-                ? Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Text(
-                    "${controller.text} is ${isPrime ? "a" : "not a"} prime number",
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: isPrime ? Colors.green : Colors.red,
-                    ),
-                  ),
-                )
-                : SizedBox.shrink(),
-          ],
+          ),
         ),
       ),
     );
