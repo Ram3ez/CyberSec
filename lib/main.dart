@@ -51,6 +51,37 @@ class _MainAppState extends State<MainApp> {
           ),
         ),
       ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: Colors.redAccent,
+        textTheme: TextTheme(
+          bodySmall: GoogleFonts.nunito(
+            fontSize: 16,
+            color: Colors.grey.shade700,
+          ),
+          titleLarge: GoogleFonts.nunito(
+            fontSize: 24,
+            color: Colors.grey.shade900,
+            fontWeight: FontWeight.bold,
+          ),
+          titleMedium: GoogleFonts.nunito(
+            fontSize: 20,
+            color: Colors.grey.shade800,
+            fontWeight: FontWeight.bold,
+          ),
+          titleSmall: GoogleFonts.nunito(
+            fontSize: 18,
+            color: Colors.grey.shade700,
+            fontWeight: FontWeight.bold,
+          ),
+          headlineLarge: GoogleFonts.nunito(
+            fontSize: 25,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
