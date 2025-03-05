@@ -80,7 +80,7 @@ class _MainAppState extends State<MainApp> {
           destinations: [
             NavigationDestination(icon: Icon(Icons.home), label: "home"),
             NavigationDestination(
-              icon: Icon(Icons.question_mark_rounded),
+              icon: Icon(Icons.info_outline_rounded),
               label: "About",
             ),
           ],
