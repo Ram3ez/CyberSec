@@ -40,6 +40,7 @@ class BasePage extends StatelessWidget {
         title: Text(title, style: Theme.of(context).textTheme.headlineLarge),
         centerTitle: false,
       ),
+      backgroundColor: Theme.of(context).canvasColor,
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();

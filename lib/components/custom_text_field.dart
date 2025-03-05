@@ -36,9 +36,7 @@ class CustomTextField extends StatelessWidget {
               iconFunction != null ? iconFunction!() : () {};
             },
           ),
-          labelStyle: Theme.of(
-            context,
-          ).textTheme.bodySmall?.copyWith(color: Colors.black),
+          labelStyle: Theme.of(context).textTheme.labelSmall,
           label: Text(label),
           border: OutlineInputBorder(
             borderSide: BorderSide(color: Theme.of(context).primaryColor),

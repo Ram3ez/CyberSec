@@ -45,143 +45,148 @@ class _EncryptionPageState extends State<EncryptionPage> {
   4. Return the decrypted plain text.""",
       ),
       title: "Encrypt/Decrypt",
-      child: Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Spacer(),
-            CustomTextField(
-              label: "Text:",
-              controller: inputController,
-              isNum: false,
-            ),
-            isError
-                ? Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Please Enter Some Text",
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodySmall?.copyWith(color: Colors.red),
+      child: Container(
+        padding: EdgeInsets.all(10),
+        child: Scaffold(
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Spacer(),
+              CustomTextField(
+                label: "Text:",
+                controller: inputController,
+                isNum: false,
+              ),
+              isError
+                  ? Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Please Enter Some Text",
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodySmall?.copyWith(color: Colors.red),
+                      ),
                     ),
-                  ),
-                )
-                : SizedBox.shrink(),
-            SizedBox(height: 10),
-            CustomTextField(
-              label: "Encrypted Text",
-              controller: outputController,
-              readOnly: true,
-              isNum: false,
-              iconFunction: () {
-                Clipboard.setData(ClipboardData(text: outputController.text));
-              },
-            ),
-
-            CustomButton(
-              label: "Encrypt",
-              onPress: () {
-                if (inputController.text == "") {
-                  outputController.text = "";
-                  setState(() {
-                    isError = true;
-                    submitted = false;
-                  });
-                } else {
-                  try {
-                    outputController.text = encrypt(inputController.text);
-                    setState(() {
-                      isError = false;
-                      submitted = true;
-                    });
-                  } catch (_) {
+                  )
+                  : SizedBox.shrink(),
+              SizedBox(height: 10),
+              CustomTextField(
+                label: "Encrypted Text",
+                controller: outputController,
+                readOnly: true,
+                isNum: false,
+                iconFunction: () {
+                  Clipboard.setData(ClipboardData(text: outputController.text));
+                },
+              ),
+              SizedBox(height: 15),
+              CustomButton(
+                label: "Encrypt",
+                onPress: () {
+                  if (inputController.text == "") {
                     outputController.text = "";
                     setState(() {
                       isError = true;
                       submitted = false;
                     });
+                  } else {
+                    try {
+                      outputController.text = encrypt(inputController.text);
+                      setState(() {
+                        isError = false;
+                        submitted = true;
+                      });
+                    } catch (_) {
+                      outputController.text = "";
+                      setState(() {
+                        isError = true;
+                        submitted = false;
+                      });
+                    }
                   }
-                }
-              },
-            ),
-            Spacer(flex: 2),
-            CustomTextField(
-              label: "Encrypted Text:",
-              controller: decryptInputController,
-              isNum: false,
-              iconFunction: () async {
-                var data = await Clipboard.getData(Clipboard.kTextPlain);
-                decryptInputController.text = data!.text ?? "";
-              },
-            ),
-            isDecryptError && !isException
-                ? Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Please Enter Some Text",
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodySmall?.copyWith(color: Colors.red),
+                },
+              ),
+              Spacer(),
+              Divider(),
+              Spacer(),
+              CustomTextField(
+                label: "Encrypted Text:",
+                controller: decryptInputController,
+                isNum: false,
+                iconFunction: () async {
+                  var data = await Clipboard.getData(Clipboard.kTextPlain);
+                  decryptInputController.text = data!.text ?? "";
+                },
+              ),
+              isDecryptError && !isException
+                  ? Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Please Enter Some Text",
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodySmall?.copyWith(color: Colors.red),
+                      ),
                     ),
-                  ),
-                )
-                : isException
-                ? Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Unexpected Error",
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodySmall?.copyWith(color: Colors.red),
+                  )
+                  : isException
+                  ? Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Unexpected Error",
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodySmall?.copyWith(color: Colors.red),
+                      ),
                     ),
-                  ),
-                )
-                : SizedBox.shrink(),
-            SizedBox(height: 10),
-            CustomTextField(
-              label: "Decrypted Text",
-              controller: decryptOutputController,
-              readOnly: true,
-              isNum: false,
-            ),
-
-            CustomButton(
-              label: "Decrypt",
-              onPress: () {
-                if (decryptInputController.text == "") {
-                  setState(() {
-                    isDecryptError = true;
-                    isException = false;
-                    submitted = false;
-                  });
-                } else {
-                  try {
-                    decryptOutputController.text = decrypt(
-                      decryptInputController.text,
-                    );
-                    setState(() {
-                      isDecryptError = false;
-                      isException = false;
-                      submitted = true;
-                    });
-                  } catch (_) {
+                  )
+                  : SizedBox.shrink(),
+              SizedBox(height: 10),
+              CustomTextField(
+                label: "Decrypted Text",
+                controller: decryptOutputController,
+                readOnly: true,
+                isNum: false,
+              ),
+              SizedBox(height: 15),
+              CustomButton(
+                label: "Decrypt",
+                onPress: () {
+                  if (decryptInputController.text == "") {
                     setState(() {
                       isDecryptError = true;
+                      isException = false;
                       submitted = false;
-                      isException = true;
                     });
+                  } else {
+                    try {
+                      decryptOutputController.text = decrypt(
+                        decryptInputController.text,
+                      );
+                      setState(() {
+                        isDecryptError = false;
+                        isException = false;
+                        submitted = true;
+                      });
+                    } catch (_) {
+                      setState(() {
+                        isDecryptError = true;
+                        submitted = false;
+                        isException = true;
+                      });
+                    }
                   }
-                }
-              },
-            ),
-            Spacer(),
-          ],
+                },
+              ),
+              Spacer(),
+            ],
+          ),
         ),
       ),
     );
