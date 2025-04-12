@@ -87,13 +87,11 @@ If you need randomness for cryptography, use CSPRNG (Cryptographically Secure PR
                         widget.maxValue.toInt(),
                       );
                     });
-                  } on RangeError catch (e) {
+                  } on RangeError catch (_) {
                     widget.submitted = true;
                     widget.isError = true;
                     setState(() {});
-                  } catch (e) {
-                    print(e.toString());
-                  }
+                  } catch (_) {}
                 },
               ),
               widget.submitted && !widget.isError
