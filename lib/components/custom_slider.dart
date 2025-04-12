@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomSlider extends StatefulWidget {
-  CustomSlider({
+  const CustomSlider({
     super.key,
     required this.sliderValue,
     required this.label,
     required this.onChanged,
   });
-  double sliderValue;
+  final double sliderValue;
   final String label;
 
-  Function(double value) onChanged;
+  final Function(double value) onChanged;
 
   @override
   State<CustomSlider> createState() => _CustomSliderState();
