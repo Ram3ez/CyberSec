@@ -1,5 +1,5 @@
-import 'package:cyber_sec/pages/about.dart';
-import 'package:cyber_sec/pages/home.dart';
+import 'package:cyber_sec/pages/about_page.dart';
+import 'package:cyber_sec/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import "package:google_fonts/google_fonts.dart";
 
@@ -98,7 +98,7 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   int index = 0;
 
-  List<Widget> pages = [Home(), About()];
+  List<Widget> pages = [HomePage(), AboutPage()];
 
   @override
   Widget build(BuildContext context) {

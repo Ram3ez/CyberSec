@@ -2,11 +2,12 @@ import "package:cyber_sec/components/custom_button.dart";
 import "package:cyber_sec/pages/encryption_page.dart";
 import "package:cyber_sec/pages/miller_rabbin_page.dart";
 import "package:cyber_sec/pages/prime_generator_page.dart";
+import "package:cyber_sec/pages/pseudo_random_generator_page.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 
-class Home extends StatelessWidget {
-  const Home({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +44,16 @@ class Home extends StatelessWidget {
                 onPress: () {
                   Navigator.of(context).push(
                     CupertinoPageRoute(builder: (context) => EncryptionPage()),
+                  );
+                },
+              ),
+              CustomButton(
+                label: "PseudoRandom Number",
+                onPress: () {
+                  Navigator.of(context).push(
+                    CupertinoPageRoute(
+                      builder: (context) => PseudoRandomGeneratorPage(),
+                    ),
                   );
                 },
               ),
