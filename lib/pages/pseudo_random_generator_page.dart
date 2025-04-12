@@ -54,6 +54,7 @@ If you need randomness for cryptography, use CSPRNG (Cryptographically Secure PR
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Spacer(),
               CustomSlider(
                 sliderValue: widget.minValue,
                 label: "Minimum Value",
@@ -72,6 +73,7 @@ If you need randomness for cryptography, use CSPRNG (Cryptographically Secure PR
                   });
                 },
               ),
+              Spacer(),
               CustomButton(
                 label: "Generate Random Number",
                 onPress: () {
@@ -115,6 +117,7 @@ If you need randomness for cryptography, use CSPRNG (Cryptographically Secure PR
                     ),
                   )
                   : SizedBox.shrink(),
+              Spacer(flex: 2),
             ],
           ),
         ),
