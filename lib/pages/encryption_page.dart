@@ -82,7 +82,7 @@ class _EncryptionPageState extends State<EncryptionPage> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       duration: Durations.long4,
-                      backgroundColor: Theme.of(context).canvasColor,
+                      backgroundColor: Theme.of(context).cardColor,
                       content: Text(
                         "Copied to clipboard",
                         style: Theme.of(context).textTheme.bodySmall,
