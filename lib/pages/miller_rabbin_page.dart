@@ -83,7 +83,9 @@ class _MillerRabbinPageState extends State<MillerRabbinPage> {
                     isError = false;
                   });
                   try {
-                    isPrime = millerRabinTest(BigInt.parse(controller.text));
+                    isPrime = MillerRabbinTest.test(
+                      BigInt.parse(controller.text),
+                    );
                     setState(() {
                       submitted = true;
                     });

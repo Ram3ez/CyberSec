@@ -79,6 +79,17 @@ class _EncryptionPageState extends State<EncryptionPage> {
                 isNum: false,
                 iconFunction: () {
                   Clipboard.setData(ClipboardData(text: outputController.text));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      duration: Durations.long4,
+                      backgroundColor: Theme.of(context).canvasColor,
+                      content: Text(
+                        "Copied to clipboard",
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
                 },
               ),
               SizedBox(height: 15),
@@ -93,7 +104,9 @@ class _EncryptionPageState extends State<EncryptionPage> {
                     });
                   } else {
                     try {
-                      outputController.text = encrypt(inputController.text);
+                      outputController.text = Encryption.encrypt(
+                        inputController.text,
+                      );
                       setState(() {
                         isError = false;
                         submitted = true;
@@ -118,6 +131,18 @@ class _EncryptionPageState extends State<EncryptionPage> {
                 iconFunction: () async {
                   var data = await Clipboard.getData(Clipboard.kTextPlain);
                   decryptInputController.text = data!.text ?? "";
+                  if (!context.mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      duration: Durations.long4,
+                      backgroundColor: Theme.of(context).cardColor,
+                      content: Text(
+                        "Pasted from clipboard",
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
                 },
               ),
               isDecryptError && !isException
@@ -166,7 +191,7 @@ class _EncryptionPageState extends State<EncryptionPage> {
                     });
                   } else {
                     try {
-                      decryptOutputController.text = decrypt(
+                      decryptOutputController.text = Encryption.decrypt(
                         decryptInputController.text,
                       );
                       setState(() {

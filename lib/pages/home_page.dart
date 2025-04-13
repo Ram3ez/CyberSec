@@ -1,5 +1,6 @@
 import "package:cyber_sec/components/custom_button.dart";
 import "package:cyber_sec/pages/encryption_page.dart";
+import "package:cyber_sec/pages/message_authentication_page.dart";
 import "package:cyber_sec/pages/miller_rabbin_page.dart";
 import "package:cyber_sec/pages/prime_generator_page.dart";
 import "package:cyber_sec/pages/pseudo_random_generator_page.dart";
@@ -53,6 +54,16 @@ class HomePage extends StatelessWidget {
                   Navigator.of(context).push(
                     CupertinoPageRoute(
                       builder: (context) => PseudoRandomGeneratorPage(),
+                    ),
+                  );
+                },
+              ),
+              CustomButton(
+                label: "Message Authentication",
+                onPress: () {
+                  Navigator.of(context).push(
+                    CupertinoPageRoute(
+                      builder: (context) => MessageAuthenticationPage(),
                     ),
                   );
                 },

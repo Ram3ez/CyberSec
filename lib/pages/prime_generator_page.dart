@@ -78,7 +78,7 @@ class _PrimeGeneratorPageState extends State<PrimeGeneratorPage> {
                     isError = false;
                   });
                   try {
-                    prime = generateLargePrime(
+                    prime = PrimeGenerator.generate(
                       int.parse(bitsController.text),
                       casesController.text == ""
                           ? 5

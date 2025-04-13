@@ -5,6 +5,7 @@ import "package:cyber_sec/components/custom_slider.dart";
 import "package:cyber_sec/functions/pseudo_random_generator.dart";
 import "package:flutter/material.dart";
 
+// ignore: must_be_immutable
 class PseudoRandomGeneratorPage extends StatefulWidget {
   PseudoRandomGeneratorPage({super.key});
   double minValue = 0.0;
@@ -84,7 +85,7 @@ If you need randomness for cryptography, use CSPRNG (Cryptographically Secure PR
                     }
                     setState(() {
                       widget.submitted = true;
-                      widget.randomNum = pseudoRandomNumber(
+                      widget.randomNum = PseudoRandomGenerator.generate(
                         widget.minValue.toInt(),
                         widget.maxValue.toInt(),
                       );
