@@ -58,6 +58,8 @@ If you need randomness for cryptography, use CSPRNG (Cryptographically Secure PR
               Spacer(),
               CustomSlider(
                 sliderValue: widget.minValue,
+                minVal: 0,
+                maxVal: 1000,
                 label: "Minimum Value",
                 onChanged: (double val) {
                   setState(() {
@@ -67,6 +69,8 @@ If you need randomness for cryptography, use CSPRNG (Cryptographically Secure PR
               ),
               CustomSlider(
                 sliderValue: widget.maxValue,
+                minVal: 0,
+                maxVal: 1000,
                 label: "Maximum Value",
                 onChanged: (double val) {
                   setState(() {

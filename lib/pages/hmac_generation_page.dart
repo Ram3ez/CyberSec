@@ -1,8 +1,8 @@
 import 'package:cyber_sec/components/custom_button.dart';
 import 'package:cyber_sec/components/custom_text_field.dart';
+import 'package:cyber_sec/functions/clipboard_function.dart';
 import 'package:cyber_sec/functions/message_authentication.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 // ignore: must_be_immutable
 class HmacGenerationPage extends StatelessWidget {
@@ -65,20 +65,7 @@ class HmacGenerationPage extends StatelessWidget {
             controller: hmacController,
             readOnly: true,
             isNum: false,
-            iconFunction: () {
-              Clipboard.setData(ClipboardData(text: hmacController.text));
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  duration: Durations.long4,
-                  backgroundColor: Theme.of(context).canvasColor,
-                  content: Text(
-                    "Copied to clipboard",
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
-            },
+            iconFunction: ClipboardFunction.copy(context, hmacController),
           ),
           Spacer(),
         ],

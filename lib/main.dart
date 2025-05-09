@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:cyber_sec/pages/about_page.dart';
 import 'package:cyber_sec/pages/home_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import "package:google_fonts/google_fonts.dart";
+import "package:video_player_win/video_player_win.dart";
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  if (!kIsWeb && Platform.isWindows) WindowsVideoPlayer.registerWith();
 
   runApp(LandingPage());
 }

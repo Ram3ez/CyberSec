@@ -1,7 +1,7 @@
 import 'dart:math';
 
 class MillerRabbinTest {
-  static bool test(BigInt n, {int k = 5}) {
+  static bool test(BigInt n, {int k = 1}) {
     if (n < BigInt.from(2)) return false;
     if (n == BigInt.from(2) || n == BigInt.from(3)) return true;
     if (n % BigInt.from(2) == BigInt.from(0)) return false;

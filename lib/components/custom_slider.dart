@@ -7,9 +7,13 @@ class CustomSlider extends StatefulWidget {
     required this.sliderValue,
     required this.label,
     required this.onChanged,
+    required this.minVal,
+    required this.maxVal,
   });
   final double sliderValue;
   final String label;
+  final double minVal;
+  final double maxVal;
 
   final Function(double value) onChanged;
 
@@ -26,7 +30,7 @@ class _CustomSliderState extends State<CustomSlider> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            width: MediaQuery.of(context).size.width * 0.78,
+            width: MediaQuery.of(context).size.width * 0.9,
             margin: EdgeInsets.all(10),
             decoration: ShapeDecoration(
               shape: RoundedRectangleBorder(
@@ -41,9 +45,9 @@ class _CustomSliderState extends State<CustomSlider> {
               thumbColor: Theme.of(context).primaryColor.withAlpha(255),
               activeColor: Theme.of(context).primaryColor,
               value: widget.sliderValue,
-              min: 0,
-              max: 1000,
-              divisions: 1000,
+              min: widget.minVal,
+              max: widget.maxVal,
+              divisions: widget.maxVal.toInt(),
               onChanged: widget.onChanged,
             ),
           ),

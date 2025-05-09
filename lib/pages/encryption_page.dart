@@ -2,9 +2,9 @@ import "package:cyber_sec/components/base_page.dart";
 import "package:cyber_sec/components/custom_button.dart";
 import "package:cyber_sec/components/custom_dialog.dart";
 import "package:cyber_sec/components/custom_text_field.dart";
+import "package:cyber_sec/functions/clipboard_function.dart";
 import "package:cyber_sec/functions/encryption.dart";
 import "package:flutter/material.dart";
-import "package:flutter/services.dart";
 
 class EncryptionPage extends StatefulWidget {
   const EncryptionPage({super.key});
@@ -77,20 +77,7 @@ class _EncryptionPageState extends State<EncryptionPage> {
                 controller: outputController,
                 readOnly: true,
                 isNum: false,
-                iconFunction: () {
-                  Clipboard.setData(ClipboardData(text: outputController.text));
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      duration: Durations.long4,
-                      backgroundColor: Theme.of(context).cardColor,
-                      content: Text(
-                        "Copied to clipboard",
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      behavior: SnackBarBehavior.floating,
-                    ),
-                  );
-                },
+                iconFunction: ClipboardFunction.copy(context, outputController),
               ),
               SizedBox(height: 15),
               CustomButton(
@@ -128,22 +115,10 @@ class _EncryptionPageState extends State<EncryptionPage> {
                 label: "Encrypted Text:",
                 controller: decryptInputController,
                 isNum: false,
-                iconFunction: () async {
-                  var data = await Clipboard.getData(Clipboard.kTextPlain);
-                  decryptInputController.text = data!.text ?? "";
-                  if (!context.mounted) return;
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      duration: Durations.long4,
-                      backgroundColor: Theme.of(context).cardColor,
-                      content: Text(
-                        "Pasted from clipboard",
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      behavior: SnackBarBehavior.floating,
-                    ),
-                  );
-                },
+                iconFunction: ClipboardFunction.paste(
+                  context,
+                  decryptInputController,
+                ),
               ),
               isDecryptError && !isException
                   ? Padding(

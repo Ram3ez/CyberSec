@@ -15,6 +15,7 @@ class BasePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leadingWidth: 40,
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();

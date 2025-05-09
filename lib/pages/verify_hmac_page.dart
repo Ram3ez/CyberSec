@@ -1,5 +1,6 @@
 import "package:cyber_sec/components/custom_button.dart";
 import "package:cyber_sec/components/custom_text_field.dart";
+import "package:cyber_sec/functions/clipboard_function.dart";
 import "package:cyber_sec/functions/message_authentication.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
@@ -41,22 +42,7 @@ class _VerifyHmacPageState extends State<VerifyHmacPage> {
             label: "HMAC",
             controller: hmacController,
             isNum: false,
-            iconFunction: () async {
-              var data = await Clipboard.getData(Clipboard.kTextPlain);
-              hmacController.text = data!.text ?? "";
-              if (!context.mounted) return;
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  duration: Durations.long4,
-                  backgroundColor: Theme.of(context).canvasColor,
-                  content: Text(
-                    "Pasted from clipboard",
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
-            },
+            iconFunction: ClipboardFunction.paste(context, hmacController),
           ),
           SizedBox(height: 40),
           CustomButton(

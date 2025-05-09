@@ -18,8 +18,9 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.all(8.0),
+      margin: const EdgeInsets.symmetric(horizontal: 10),
       child: TextField(
         controller: controller,
         readOnly: readOnly,
