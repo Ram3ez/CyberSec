@@ -83,7 +83,8 @@ class _PasswordStrengthTesterPageState
                     hasLowerCase &&
                     hasUpperCase &&
                     hasNumber &&
-                    hasUpperCase) {
+                    hasUpperCase &&
+                    hasSpecial) {
                   isStrong = true;
                 } else {
                   isStrong = false;
