@@ -6,7 +6,7 @@ import 'package:cyber_sec/functions/clipboard_function.dart';
 import 'package:flutter/material.dart';
 
 class PasswordStrengthTesterPage extends StatefulWidget {
-  PasswordStrengthTesterPage({super.key});
+  const PasswordStrengthTesterPage({super.key});
 
   @override
   State<PasswordStrengthTesterPage> createState() =>
