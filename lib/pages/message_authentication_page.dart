@@ -1,5 +1,6 @@
 import 'package:cyber_sec/components/base_page.dart';
 import 'package:cyber_sec/components/custom_dialog.dart';
+import 'package:cyber_sec/components/custom_navigation_bar.dart';
 import 'package:cyber_sec/pages/hmac_generation_page.dart';
 import 'package:cyber_sec/pages/verify_hmac_page.dart';
 import 'package:flutter/material.dart';
@@ -68,16 +69,12 @@ App tokens and cookies
       title: "Message Authentication",
       child: Scaffold(
         body: pages[index],
-        bottomNavigationBar: NavigationBar(
-          height: 60,
-          elevation: 0,
-          selectedIndex: index,
-          onDestinationSelected: (value) {
-            setState(() {
-              index = value;
-            });
+        bottomNavigationBar: CustomNavigationBar(
+          index: index,
+          onSelected: (value) {
+            index = value;
+            setState(() {});
           },
-          indicatorColor: Colors.redAccent.withAlpha(90),
           destinations: [
             NavigationDestination(
               icon: Icon(Icons.security_rounded),

@@ -7,10 +7,12 @@ class CustomSwitch extends StatelessWidget {
     required this.curVal,
     required this.onChange,
     required this.label,
+    this.centered = false,
   });
 
   bool curVal;
   String label;
+  bool centered;
   void Function(bool val) onChange;
 
   @override
@@ -18,6 +20,8 @@ class CustomSwitch extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Row(
+        mainAxisAlignment:
+            centered ? MainAxisAlignment.center : MainAxisAlignment.start,
         spacing: 10,
         children: [
           Switch(

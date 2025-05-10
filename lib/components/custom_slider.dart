@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CustomSlider extends StatefulWidget {
+class CustomSlider extends StatelessWidget {
   const CustomSlider({
     super.key,
     required this.sliderValue,
@@ -17,11 +17,6 @@ class CustomSlider extends StatefulWidget {
 
   final Function(double value) onChanged;
 
-  @override
-  State<CustomSlider> createState() => _CustomSliderState();
-}
-
-class _CustomSliderState extends State<CustomSlider> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -44,15 +39,15 @@ class _CustomSliderState extends State<CustomSlider> {
             child: Slider(
               thumbColor: Theme.of(context).primaryColor.withAlpha(255),
               activeColor: Theme.of(context).primaryColor,
-              value: widget.sliderValue,
-              min: widget.minVal,
-              max: widget.maxVal,
-              divisions: widget.maxVal.toInt(),
-              onChanged: widget.onChanged,
+              value: sliderValue,
+              min: minVal,
+              max: maxVal,
+              divisions: maxVal.toInt(),
+              onChanged: onChanged,
             ),
           ),
           Text(
-            "${widget.label}: ${widget.sliderValue.toStringAsFixed(0)}",
+            "$label: ${sliderValue.toStringAsFixed(0)}",
             style: GoogleFonts.aBeeZee(fontSize: 18),
           ),
         ],

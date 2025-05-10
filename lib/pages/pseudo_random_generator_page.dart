@@ -2,6 +2,7 @@ import "package:cyber_sec/components/base_page.dart";
 import "package:cyber_sec/components/custom_button.dart";
 import "package:cyber_sec/components/custom_dialog.dart";
 import "package:cyber_sec/components/custom_slider.dart";
+import "package:cyber_sec/components/custom_switch.dart";
 import "package:cyber_sec/functions/pseudo_random_generator.dart";
 import "package:flutter/material.dart";
 
@@ -14,6 +15,7 @@ class PseudoRandomGeneratorPage extends StatefulWidget {
   String result = "";
   bool submitted = false;
   bool isError = false;
+  bool isAscii = false;
 
   @override
   State<PseudoRandomGeneratorPage> createState() =>
@@ -78,21 +80,38 @@ If you need randomness for cryptography, use CSPRNG (Cryptographically Secure PR
                   });
                 },
               ),
+              SizedBox(height: 20),
+              CustomSwitch(
+                curVal: widget.isAscii,
+                centered: true,
+                onChange: (val) {
+                  widget.isAscii = val;
+                  setState(() {});
+                },
+                label: "Use ASCII Generator",
+              ),
               Spacer(),
               CustomButton(
                 label: "Generate Random Number",
                 onPress: () {
                   try {
                     widget.isError = false;
-                    if (widget.maxValue < widget.minValue) {
+                    if (widget.maxValue < widget.minValue ||
+                        widget.maxValue == widget.minValue) {
                       widget.isError = true;
                     }
                     setState(() {
                       widget.submitted = true;
-                      widget.randomNum = PseudoRandomGenerator.generate(
-                        widget.minValue.toInt(),
-                        widget.maxValue.toInt(),
-                      );
+                      widget.randomNum =
+                          widget.isAscii
+                              ? PseudoRandomGenerator.generateAscii(
+                                widget.minValue.toInt(),
+                                widget.maxValue.toInt(),
+                              )
+                              : PseudoRandomGenerator.generate(
+                                widget.minValue.toInt(),
+                                widget.maxValue.toInt(),
+                              );
                     });
                   } on RangeError catch (_) {
                     widget.submitted = true;
