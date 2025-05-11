@@ -4,6 +4,7 @@ import 'package:cyber_sec/components/custom_dialog.dart';
 import 'package:cyber_sec/components/custom_text_field.dart';
 import 'package:cyber_sec/functions/clipboard_function.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class PasswordStrengthTesterPage extends StatefulWidget {
   const PasswordStrengthTesterPage({super.key});
@@ -28,6 +29,21 @@ class _PasswordStrengthTesterPageState
   bool hasNumber = false;
 
   bool isStrong = false;
+
+  bool isCommon = false;
+  String commonPassText = "";
+  List<String>? commonPasswords;
+
+  void loadFile() async {
+    commonPassText = await rootBundle.loadString("assets/common_pass.txt");
+    commonPasswords = commonPassText.split("\n");
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadFile();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,6 +136,18 @@ The app marks a password as strong only if all five conditions are met. The logi
                 } else {
                   isStrong = false;
                 }
+                isCommon = false;
+                for (String password in commonPasswords!) {
+                  if (passwordController.text.toLowerCase().compareTo(
+                        password,
+                      ) ==
+                      0) {
+                    isStrong = false;
+                    isCommon = true;
+                    break;
+                  }
+                }
+
                 setState(() {});
               },
             ),
@@ -169,6 +197,14 @@ The app marks a password as strong only if all five conditions are met. The logi
                     !hasSpecial
                         ? Text(
                           "Does not contain Special Characters",
+                          style: Theme.of(
+                            context,
+                          ).textTheme.titleSmall?.copyWith(color: Colors.red),
+                        )
+                        : SizedBox.shrink(),
+                    isCommon
+                        ? Text(
+                          "Commonly Used Password",
                           style: Theme.of(
                             context,
                           ).textTheme.titleSmall?.copyWith(color: Colors.red),

@@ -2,6 +2,7 @@ import "package:cyber_sec/components/base_page.dart";
 import "package:cyber_sec/components/custom_button.dart";
 import "package:cyber_sec/functions/switch_page.dart";
 import "package:cyber_sec/pages/password_generator_page.dart";
+import "package:cyber_sec/pages/password_strength_tester_page.dart";
 import "package:flutter/material.dart";
 
 class PasswordSecurityPage extends StatelessWidget {
@@ -27,7 +28,10 @@ class PasswordSecurityPage extends StatelessWidget {
               ),
               CustomButton(
                 label: "Password Strength Tester",
-                onPress: SwitchPage.switchPage(context, PasswordSecurityPage()),
+                onPress: SwitchPage.switchPage(
+                  context,
+                  PasswordStrengthTesterPage(),
+                ),
               ),
             ],
           ),
