@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class BasePage extends StatelessWidget {
   const BasePage({
     super.key,
-    required this.dialog,
+    this.dialog,
     required this.title,
     required this.child,
   });
-  final Widget dialog;
+  final Widget? dialog;
   final String title;
   final Widget child;
 
@@ -22,21 +22,27 @@ class BasePage extends StatelessWidget {
           },
           icon: Icon(Icons.arrow_back_ios_new, color: Colors.white),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              showDialog(context: context, builder: (context) => dialog);
-            },
-            icon: Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Icon(
-                Icons.info_outline_rounded,
-                color: Colors.white,
-                size: 30,
-              ),
-            ),
-          ),
-        ],
+        actions:
+            dialog != null
+                ? [
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => dialog!,
+                      );
+                    },
+                    icon: Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Icon(
+                        Icons.info_outline_rounded,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                    ),
+                  ),
+                ]
+                : null,
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(title, style: Theme.of(context).textTheme.headlineLarge),
         centerTitle: false,

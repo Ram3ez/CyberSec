@@ -1,6 +1,6 @@
 import 'package:cyber_sec/components/base_page.dart';
 import 'package:cyber_sec/components/custom_button.dart';
-import 'package:cyber_sec/components/custom_dialog.dart';
+//import 'package:cyber_sec/components/custom_dialog.dart';
 import 'package:cyber_sec/components/custom_text_field.dart';
 import 'package:cyber_sec/functions/clipboard_function.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +32,7 @@ class _PasswordStrengthTesterPageState
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      dialog: CustomDialog(title: "Password Strength Tester", body: "NONE"),
+      //dialog: CustomDialog(title: "Password Strength Tester", body: "NONE"),
       title: "Password Strength",
       child: Container(
         margin: EdgeInsets.only(top: 150),

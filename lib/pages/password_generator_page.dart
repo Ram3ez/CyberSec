@@ -1,8 +1,7 @@
 import "dart:math";
-
 import "package:cyber_sec/components/base_page.dart";
 import "package:cyber_sec/components/custom_button.dart";
-import "package:cyber_sec/components/custom_dialog.dart";
+//import "package:cyber_sec/components/custom_dialog.dart";
 import "package:cyber_sec/components/custom_slider.dart";
 import "package:cyber_sec/components/custom_switch.dart";
 import "package:cyber_sec/components/custom_text_field.dart";
@@ -31,12 +30,14 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
   final String special = '!@#\$%^&*()_+-=[]{}|;:,.<>?';
 
   String chars = "";
+  List<String> required = [];
   String password = "";
+  int remaining = 0;
 
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      dialog: CustomDialog(title: "Password Generator", body: "NONE"),
+      //dialog: CustomDialog(title: "Password Generator", body: "NONE"),
       title: "Password Generator",
       child: Padding(
         padding: const EdgeInsets.only(top: 15),
@@ -92,10 +93,25 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
               label: "Generate Password",
               onPress: () {
                 chars = "";
-                if (includeLower) chars += lower;
-                if (includeUpper) chars += upper;
-                if (includeNumber) chars += nums;
-                if (includeSpecial) chars += special;
+                required = [];
+                if (includeLower) {
+                  chars += lower;
+                  required.add(lower[Random.secure().nextInt(lower.length)]);
+                }
+                if (includeUpper) {
+                  chars += upper;
+                  required.add(upper[Random.secure().nextInt(upper.length)]);
+                }
+                if (includeNumber) {
+                  chars += nums;
+                  required.add(nums[Random.secure().nextInt(nums.length)]);
+                }
+                if (includeSpecial) {
+                  chars += special;
+                  required.add(
+                    special[Random.secure().nextInt(special.length)],
+                  );
+                }
 
                 if (chars.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -113,11 +129,16 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
                   );
                   passwordController.text = "";
                 } else {
+                  remaining = length.toInt() - required.length;
                   password =
-                      List.generate(
-                        length.toInt(),
-                        (index) => chars[Random.secure().nextInt(chars.length)],
-                      ).join();
+                      (List.generate(
+                              remaining, //length.toInt(),
+                              (index) =>
+                                  chars[Random.secure().nextInt(chars.length)],
+                            )
+                            ..addAll(required)
+                            ..shuffle(Random.secure()))
+                          .join(); //.join();
                   passwordController.text = password;
                 }
               },

@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:cyber_sec/functions/miller_rabbin_test.dart';
 
 class PrimeGenerator {

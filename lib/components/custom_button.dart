@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({super.key, required this.label, required this.onPress});
@@ -15,7 +14,7 @@ class CustomButton extends StatelessWidget {
       minWidth: MediaQuery.of(context).size.width * 0.8,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
       onPressed: onPress,
-      child: Text(label, style: GoogleFonts.aBeeZee(fontSize: 18)),
+      child: Text(label, style: Theme.of(context).textTheme.titleSmall),
     );
   }
 }
