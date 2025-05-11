@@ -1,25 +1,12 @@
-import "package:cyber_sec/components/custom_button.dart";
-import "package:cyber_sec/pages/encryption_page.dart";
-import "package:cyber_sec/pages/message_authentication_page.dart";
-import "package:cyber_sec/pages/miller_rabbin_page.dart";
-import "package:cyber_sec/pages/password_generator_page.dart";
-import "package:cyber_sec/pages/password_strength_tester_page.dart";
-import "package:cyber_sec/pages/prime_generator_page.dart";
-import "package:cyber_sec/pages/pseudo_random_generator_page.dart";
-//import "package:cyber_sec/pages/video_test_page.dart";
-import "package:flutter/cupertino.dart";
+import "package:cyber_sec/components/custom_grid_button.dart";
+import "package:cyber_sec/functions/switch_page.dart";
+import "package:cyber_sec/pages/interactive_crypto_page.dart";
+import "package:cyber_sec/pages/number_theory_page.dart";
+import "package:cyber_sec/pages/password_security_page.dart";
 import "package:flutter/material.dart";
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
-  void Function() onPress(BuildContext context, Widget page) {
-    return () {
-      Navigator.of(
-        context,
-      ).push(CupertinoPageRoute(builder: (context) => page));
-    };
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,45 +15,39 @@ class HomePage extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Center(
           child: Column(
-            spacing: 12,
+            spacing: 25,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CustomButton(
-                label: "Miller Rabbin Test",
-                onPress: onPress(context, MillerRabbinPage()),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                spacing: 20,
+                children: [
+                  CustomGridButton(
+                    label: "Interactive Cryptography Tools",
+                    onPress: SwitchPage.switchPage(
+                      context,
+                      InteractiveCryptoPage(),
+                    ),
+                  ),
+                  CustomGridButton(
+                    label: "Number Theory & Key Generation",
+                    onPress: SwitchPage.switchPage(context, NumberTheoryPage()),
+                  ),
+                ],
               ),
-              CustomButton(
-                label: "Generate Prime Number",
-                onPress: onPress(context, PrimeGeneratorPage()),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                spacing: 20,
+                children: [
+                  CustomGridButton(
+                    label: "Password Security Toolkit",
+                    onPress: SwitchPage.switchPage(
+                      context,
+                      PasswordSecurityPage(),
+                    ),
+                  ),
+                ],
               ),
-              CustomButton(
-                label: "Text Encryption/Decryption",
-                onPress: onPress(context, EncryptionPage()),
-              ),
-              CustomButton(
-                label: "PseudoRandom Number",
-                onPress: onPress(context, PseudoRandomGeneratorPage()),
-              ),
-              CustomButton(
-                label: "Message Authentication",
-                onPress: onPress(context, MessageAuthenticationPage()),
-              ),
-              CustomButton(
-                label: "Password Generator",
-                onPress: onPress(context, PasswordGeneratorPage()),
-              ),
-              CustomButton(
-                label: "Password Strength Tester",
-                onPress: onPress(context, PasswordStrengthTesterPage()),
-              ),
-              /* CustomButton(
-                label: "Video Test",
-                onPress: () {
-                  Navigator.of(context).push(
-                    CupertinoPageRoute(builder: (context) => VideoTestPage()),
-                  );
-                },
-              ), */
             ],
           ),
         ),
