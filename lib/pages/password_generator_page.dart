@@ -1,7 +1,7 @@
 import "dart:math";
 import "package:cyber_sec/components/base_page.dart";
 import "package:cyber_sec/components/custom_button.dart";
-//import "package:cyber_sec/components/custom_dialog.dart";
+import "package:cyber_sec/components/custom_dialog.dart";
 import "package:cyber_sec/components/custom_slider.dart";
 import "package:cyber_sec/components/custom_switch.dart";
 import "package:cyber_sec/components/custom_text_field.dart";
@@ -37,7 +37,45 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      //dialog: CustomDialog(title: "Password Generator", body: "NONE"),
+      dialog: CustomDialog(
+        title: "Password Generator",
+        body: """
+What Does It Do?
+This feature helps you create strong and random passwords to keep your online accounts secure. You get full control over how your password looks—choose the length and what types of characters you want to include!
+
+ How It Works
+A password is created by randomly selecting characters from a set of options that you choose:
+
+✅ Uppercase letters (A–Z)
+
+✅ Lowercase letters (a–z)
+
+✅ Numbers (0–9)
+
+✅ Special characters (!, @, #, etc.)
+
+Once you select your preferences and length (from 6 to 30 characters), the app generates a password by randomly picking characters from the combined set using a secure random function.
+
+This module uses Random.secure() from Dart’s dart:math library, which interfaces with a cryptographically secure random number generator (CSPRNG) provided by the underlying OS (such as /dev/urandom on Unix or CryptGenRandom on Windows).
+
+ How It Works:
+Character Pool Construction:
+Based on user choices (uppercase, lowercase, digits, symbols), a character set is built.
+
+Secure Random Selection:
+For each position in the password, Random.secure().nextInt(n) selects a random index securely from the character pool.
+
+Password Formation:
+The selected characters are concatenated into a final password string
+
+
+ Why Use This?
+Strong passwords are harder to guess or crack.
+
+Using a secure random generator makes the password unpredictable.
+
+Customization allows you to match the requirements of most websites and apps.""",
+      ),
       title: "Password Generator",
       child: Padding(
         padding: const EdgeInsets.only(top: 15),

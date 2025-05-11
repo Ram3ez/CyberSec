@@ -25,6 +25,7 @@ class _LandingPageState extends State<LandingPage> {
     canvasColor: Colors.white,
     textTheme: TextTheme(
       bodySmall: GoogleFonts.nunito(fontSize: 16, color: Colors.grey.shade900),
+      bodyMedium: GoogleFonts.nunito(fontSize: 17, color: Colors.grey.shade700),
       titleLarge: GoogleFonts.nunito(
         fontSize: 24,
         color: Colors.black87,
@@ -54,7 +55,8 @@ class _LandingPageState extends State<LandingPage> {
     primaryColor: Colors.redAccent.withAlpha(180),
     cardColor: Colors.white.withAlpha(20),
     textTheme: TextTheme(
-      bodySmall: GoogleFonts.nunito(fontSize: 16, color: Colors.white70),
+      bodySmall: GoogleFonts.nunito(fontSize: 16, color: Colors.white54),
+      bodyMedium: GoogleFonts.nunito(fontSize: 17, color: Colors.white70),
       titleLarge: GoogleFonts.nunito(
         fontSize: 24,
         color: Colors.white,

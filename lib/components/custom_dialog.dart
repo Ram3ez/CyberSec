@@ -11,8 +11,9 @@ class CustomDialog extends StatelessWidget {
       backgroundColor: Theme.of(context).primaryColor.withAlpha(255),
       insetPadding: EdgeInsets.all(10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      child: SizedBox(
+      child: Container(
         height: MediaQuery.of(context).size.height * 0.6,
+        margin: const EdgeInsets.all(8),
         child: SingleChildScrollView(
           clipBehavior: Clip.antiAliasWithSaveLayer,
           child: Container(

@@ -27,28 +27,33 @@ class _PseudoRandomGeneratorPageState extends State<PseudoRandomGeneratorPage> {
   Widget build(BuildContext context) {
     return BasePage(
       dialog: CustomDialog(
-        title: "Pseudo Random Number Generator",
-        body: '''What is a PRNG?
-A Pseudo-Random Number Generator (PRNG) is a program or algorithm that generates a sequence of numbers that appear random but are actually completely determined by an initial value known as the seed.
+        title: "Pseudo-Random Number Generator (PRNG)",
+        body: ''' 
+ What is a PRNG?
+A Pseudo-Random Number Generator (PRNG) is an algorithm that generates a sequence of numbers that look random, but are actually deterministic. This means if you start with the same seed value, the generator will always produce the same sequence of numbers.
 
-PRNGs are deterministic, meaning if you give the same seed, you’ll get the same sequence every time.
-Seed: The Starting Point
-The seed is the input to the PRNG algorithm. Different seeds produce different sequences.
+ Why "Pseudo"?
+Unlike true randomness (like flipping a coin), PRNGs are based on formulas. Their results are repeatable and predictable if you know the initial input (seed), so they are not suitable for secure encryption.
 
- Common PRNG Formula
-One simple and widely used PRNG method is called the Linear Congruential Generator (LCG).
+ Common Formula Used — Linear Congruential Generator (LCG)
+A popular and simple PRNG formula is the Linear Congruential Generator (LCG):
+Next = (a × Current + c) mod m
 
-LCG Formula:Xₙ₊₁ = (a × Xₙ + c) mod m
-where,
-Xₙ is the Nth term in the sequence
-X0: the seed (initial value)
-a: multiplier
-c: increment
-m: modulus
+Where:
 
-PRNGs are not safe for encryption or secure applications - they are predictable.
-If you need randomness for cryptography, use CSPRNG (Cryptographically Secure PRNG) instead.
+Current is the current number (starting with the seed)
 
+a is a multiplier
+
+c is an increment
+
+m is the modulus
+
+Next is the next random-looking number in the sequence
+
+By repeating this formula, we generate a sequence of pseudo-random numbers.
+
+PRNGs are fast and useful for simulations, games, or simple apps, but they are not secure. For cryptographic applications, you must use Cryptographically Secure PRNGs (CSPRNG), which are designed to be unpredictable and resistant to reverse-engineering.
 ''',
       ),
       title: "Random Number Generator",
