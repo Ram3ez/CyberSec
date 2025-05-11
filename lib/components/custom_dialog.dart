@@ -14,26 +14,32 @@ class CustomDialog extends StatelessWidget {
       child: Container(
         height: MediaQuery.of(context).size.height * 0.6,
         margin: const EdgeInsets.all(8),
-        child: SingleChildScrollView(
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.9,
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(title, style: Theme.of(context).textTheme.titleMedium),
-                SizedBox(height: 10),
-                Text(
-                  body,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.white,
-                    fontSize: 14,
+        child: Column(
+          children: [
+            Text(title, style: Theme.of(context).textTheme.titleMedium),
+            SizedBox(height: 10),
+            Expanded(
+              child: SingleChildScrollView(
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        body,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
