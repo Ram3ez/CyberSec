@@ -23,6 +23,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/google_fonts/
 
 flutter_launcher_icons:
   android: "launcher_icon"
