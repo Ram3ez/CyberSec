@@ -2,6 +2,7 @@ import 'package:cyber_sec/components/base_page.dart';
 import 'package:cyber_sec/components/custom_button.dart';
 import 'package:cyber_sec/components/custom_dialog.dart';
 import 'package:cyber_sec/components/custom_text_field.dart';
+import 'package:cyber_sec/functions/clipboard_function.dart';
 import 'package:cyber_sec/functions/prime_generator.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +16,7 @@ class PrimeGeneratorPage extends StatefulWidget {
 class _PrimeGeneratorPageState extends State<PrimeGeneratorPage> {
   final TextEditingController bitsController = TextEditingController();
   final TextEditingController casesController = TextEditingController();
+  final TextEditingController primeController = TextEditingController();
   bool isError = false;
   bool submitted = false;
   bool isPrime = false;
@@ -46,7 +48,8 @@ class _PrimeGeneratorPageState extends State<PrimeGeneratorPage> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CustomTextField(label: "Bits:", controller: bitsController),
+            Spacer(),
+            CustomTextField(label: "Bits", controller: bitsController),
             isError
                 ? Padding(
                   padding: const EdgeInsets.only(left: 10.0),
@@ -62,7 +65,7 @@ class _PrimeGeneratorPageState extends State<PrimeGeneratorPage> {
                 )
                 : SizedBox.shrink(),
             SizedBox(height: 20),
-            CustomTextField(label: "Cases:", controller: casesController),
+            CustomTextField(label: "Cases", controller: casesController),
 
             SizedBox(height: 40),
             CustomButton(
@@ -72,10 +75,12 @@ class _PrimeGeneratorPageState extends State<PrimeGeneratorPage> {
                   setState(() {
                     isError = true;
                     submitted = false;
+                    primeController.text = "";
                   });
                 } else {
                   setState(() {
                     isError = false;
+                    //primeController.text = "";
                   });
                   try {
                     prime = PrimeGenerator.generate(
@@ -86,17 +91,20 @@ class _PrimeGeneratorPageState extends State<PrimeGeneratorPage> {
                     );
                     setState(() {
                       submitted = true;
+                      primeController.text = prime.toString();
                     });
                   } catch (_) {
                     setState(() {
                       isError = true;
                       submitted = false;
+                      primeController.text = "";
                     });
                   }
                 }
               },
             ),
-            submitted
+
+            /* submitted
                 ? Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Text(
@@ -106,7 +114,16 @@ class _PrimeGeneratorPageState extends State<PrimeGeneratorPage> {
                     ).textTheme.titleSmall?.copyWith(color: Colors.green),
                   ),
                 )
-                : SizedBox.shrink(),
+                : SizedBox.shrink(), */
+            //SizedBox(height: 100),
+            Spacer(),
+            CustomTextField(
+              label: "Prime Number",
+              controller: primeController,
+              readOnly: true,
+              iconFunction: ClipboardFunction.copy(context, primeController),
+            ),
+            Spacer(flex: 2),
           ],
         ),
       ),
