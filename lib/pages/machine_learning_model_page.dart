@@ -39,16 +39,23 @@ class _MachineLearningModelPageState extends State<MachineLearningModelPage> {
         'https://r1shab-final.hf.space/gradio_api/call/predict/$result',
         options: Options(headers: {'Content-Type': 'application/json'}),
       );
+      print(response2);
 
       //_result = response2.data.toString().split("\n")[1].toLowerCase();
-      final RegExp regex = RegExp(r'(Legitimate|Phishing) \(([^)]+)\)');
+      /* final RegExp regex = RegExp(
+        r'(Legitimate|Phishing|phishing) \(([^)]+)\)',
+      ); */
+      final RegExp regex = RegExp(
+        r"(legitimate|phishing)",
+        caseSensitive: false,
+      );
 
       final Match? match = regex.firstMatch(response2.data.toString());
       if (match != null) {
         switch (match.group(1)) {
           case 'Legitimate':
             _result = '✅ Result: This is a safe and legitimate source.';
-          case 'Phishing':
+          case 'phishing' || 'Phishing':
             _result = '🚨 DANGER: This is a malicious phishing Link.';
           default:
             _result =
