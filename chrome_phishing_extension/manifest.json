@@ -4,10 +4,14 @@
   "version": "1.1",
   "description": "Detects potential phishing sites and allows you to toggle protection.",
   "permissions": ["tabs", "storage"],
-  "host_permissions": ["https://r1shab-second-review.hf.space/"],
+  "host_permissions": [
+    "https://r1shab-second-review.hf.space/",
+    "https://www.whoisjson.com/"
+  ],
   "background": {
     "service_worker": "background.js"
   },
+  "options_page": "options.html",
   "action": {
     "default_popup": "popup.html",
     "default_icon": {

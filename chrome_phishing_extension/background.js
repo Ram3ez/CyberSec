@@ -44,6 +44,61 @@ async function isPhishingLink(url) {
   return { isPhishing: false }; // Default to safe if no match
 }
 
+async function getWhoisInfo(domain) {
+  const data = await chrome.storage.sync.get("whoisApiKey");
+  const apiKey = data.whoisApiKey;
+
+  if (!apiKey) {
+    console.log("WHOIS API key not found. Skipping lookup.");
+    return null;
+  }
+
+  const whoisApiUrl = `https://www.whoisjson.com/api/v1/whois?domain=${domain}`;
+
+  try {
+    const response = await fetch(whoisApiUrl, {
+      headers: {
+        Authorization: `TOKEN=${apiKey}`,
+      },
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+    const data = await response.json();
+
+    // If the API returns an error or can't find the domain, it will have an 'error' property.
+    if (data.error) {
+      return null;
+    }
+
+    const whoisInfo = {
+      // The model shows the registrar name is in 'registrar.name'
+      registrar: data.registrar?.name || data.registrar || "N/A",
+      // The model uses 'created' and 'expires' for dates.
+      // Also handle fallback to the other common names.
+      created:
+        data.created || data.created_date || data.creation_date
+          ? new Date(
+              data.created || data.created_date || data.creation_date
+            ).toDateString()
+          : "N/A",
+
+      expires:
+        data.expires || data.expires_date || data.expiration_date
+          ? new Date(
+              data.expires || data.expires_date || data.expiration_date
+            ).toDateString()
+          : "N/A",
+    };
+
+    return whoisInfo;
+  } catch (e) {
+    console.error("Error fetching WHOIS info:", e);
+    return null;
+  }
+}
+
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   // We only want to act when the page has finished loading
   if (
@@ -63,13 +118,32 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   // isPhishingLink is async, so we need to await its result.
   const result = await isPhishingLink(tab.url);
   if (result.isPhishing) {
-    // Send a message to the content script in the tab to show the warning.
+    // 1. Immediately send the warning to the user.
     chrome.tabs.sendMessage(
       tabId,
-      { action: "showWarning", confidence: result.confidence },
+      {
+        action: "showWarning",
+        confidence: result.confidence,
+        rdap: null, // Send null for now, it will be updated later.
+      },
       () => {
         chrome.runtime.lastError; // Suppress error on pages where content scripts can't run
       }
     );
+
+    // 2. Asynchronously fetch WHOIS info and send an update.
+    const domain = new URL(tab.url).hostname;
+    getWhoisInfo(domain).then((whoisInfo) => {
+      // If we got info, send a second message to update the dialog.
+      if (whoisInfo) {
+        chrome.tabs.sendMessage(
+          tabId,
+          { action: "updateWhois", rdap: whoisInfo },
+          () => {
+            chrome.runtime.lastError;
+          }
+        );
+      }
+    });
   }
 });

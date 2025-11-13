@@ -1,4 +1,4 @@
-function showWarning(confidence) {
+function showWarning(confidence, rdapInfo) {
   // Check if the warning already exists
   if (document.getElementById("phishing-warning-overlay")) {
     return;
@@ -45,6 +45,31 @@ function showWarning(confidence) {
   confidenceMessage.style.fontWeight = "bold";
   confidenceMessage.innerText = `Model Confidence: ${confidence}`;
 
+  const rdapContainer = document.createElement("div");
+  rdapContainer.id = "phishing-warning-rdap"; // Add an ID for easy selection later
+  rdapContainer.style.marginTop = "20px";
+  rdapContainer.style.padding = "10px";
+  rdapContainer.style.border = "1px solid #a00";
+  rdapContainer.style.borderRadius = "5px";
+  rdapContainer.style.textAlign = "left";
+  rdapContainer.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
+
+  const rdapTitle = document.createElement("h4");
+  rdapTitle.innerText = "Domain Information:";
+  rdapTitle.style.margin = "0 0 10px 0";
+  rdapTitle.style.color = "#a00";
+
+  rdapContainer.appendChild(rdapTitle);
+
+  if (rdapInfo) {
+    rdapContainer.innerHTML += `<b>Registrar:</b> ${rdapInfo.registrar}<br>`;
+    rdapContainer.innerHTML += `<b>Created:</b> ${rdapInfo.created}<br>`;
+    rdapContainer.innerHTML += `<b>Expires:</b> ${rdapInfo.expires}`;
+  } else {
+    // Show a loading state initially
+    rdapContainer.innerHTML += "<b>Loading domain information...</b>";
+  }
+
   const dismissButton = document.createElement("button");
   dismissButton.id = "phishing-warning-dismiss";
   dismissButton.innerText = "I understand the risk, let me proceed";
@@ -64,6 +89,7 @@ function showWarning(confidence) {
   dialog.appendChild(title);
   dialog.appendChild(message);
   dialog.appendChild(confidenceMessage);
+  dialog.appendChild(rdapContainer);
   dialog.appendChild(dismissButton);
   overlay.appendChild(dialog);
   document.body.appendChild(overlay);
@@ -71,6 +97,25 @@ function showWarning(confidence) {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "showWarning") {
-    showWarning(request.confidence);
+    showWarning(request.confidence, request.rdap);
+  } else if (request.action === "updateWhois") {
+    const rdapContainer = document.getElementById("phishing-warning-rdap");
+    if (rdapContainer) {
+      // Clear the "Loading..." text.
+      const title = rdapContainer.querySelector("h4");
+      rdapContainer.innerHTML = ""; // Clear everything
+      rdapContainer.appendChild(title); // Add title back
+
+      const rdapInfo = request.rdap;
+      if (rdapInfo) {
+        rdapContainer.innerHTML += `<b>Registrar:</b> ${rdapInfo.registrar}<br>`;
+        rdapContainer.innerHTML += `<b>Created:</b> ${rdapInfo.created}<br>`;
+        rdapContainer.innerHTML += `<b>Expires:</b> ${rdapInfo.expires}`;
+      } else {
+        // If the update message was sent but the info is still null
+        rdapContainer.innerHTML +=
+          "Domain information could not be retrieved. This can happen with private or protected domains.";
+      }
+    }
   }
 });

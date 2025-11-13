@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const enabledToggle = document.getElementById("enabledToggle");
   const statusDiv = document.getElementById("status");
   const switchLabel = document.querySelector(".switch-label");
+  const optionsLink = document.getElementById("options-link");
 
   // Load the current state from storage and update the UI
   chrome.storage.local.get({ isEnabled: true }, (data) => {
@@ -15,6 +16,10 @@ document.addEventListener("DOMContentLoaded", () => {
     chrome.storage.local.set({ isEnabled: isEnabled }, () => {
       updateStatus(isEnabled);
     });
+  });
+
+  optionsLink.addEventListener("click", () => {
+    chrome.runtime.openOptionsPage();
   });
 
   function updateStatus(isEnabled) {
