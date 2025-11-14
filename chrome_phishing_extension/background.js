@@ -116,7 +116,10 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   }
 
   // isPhishingLink is async, so we need to await its result.
-  const result = await isPhishingLink(tab.url);
+  const domain = new URL(tab.url);
+  const site = domain.protocol + "//" + domain.hostname;
+
+  const result = await isPhishingLink(site);
   if (result.isPhishing) {
     // 1. Immediately send the warning to the user.
     chrome.tabs.sendMessage(
@@ -132,8 +135,9 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     );
 
     // 2. Asynchronously fetch WHOIS info and send an update.
-    const domain = new URL(tab.url).hostname;
-    getWhoisInfo(domain).then((whoisInfo) => {
+
+    //console.log(domain);
+    getWhoisInfo(domain.hostname).then((whoisInfo) => {
       // If we got info, send a second message to update the dialog.
       if (whoisInfo) {
         chrome.tabs.sendMessage(
